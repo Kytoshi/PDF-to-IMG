@@ -1,4 +1,4 @@
-import fitz  # PyMuPDF
+from pymupdf import open as pymupdf_open # PyMuPDF
 import sys
 import os
 
@@ -16,8 +16,10 @@ for file in os.listdir(folderPath):
     if os.path.isfile(fullPath):
         print(fullPath)
         fileName = file[:-4]
-        doc = fitz.open(fullPath)
+        doc = pymupdf_open(fullPath)
         for page in doc:
             count = page.number + 1
             pix = page.get_pixmap() #Render page to an image
             pix.save(os.path.join(currentDir, "output//" + fileName + " [page %i].png" % count)) #Save the image as a PNG
+        doc.close()
+        os.remove(fullPath)
